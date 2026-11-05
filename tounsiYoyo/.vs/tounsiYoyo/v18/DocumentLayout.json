@@ -1,0 +1,87 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|c:\\users\\zidane\\documents\\github\\programmationdistribuee\\backoffice\\tounsiyoyo\\tounsiyoyo\\model\\special.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|solutionrelative:tounsiyoyo\\model\\special.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|c:\\users\\zidane\\documents\\github\\programmationdistribuee\\backoffice\\tounsiyoyo\\tounsiyoyo\\model\\business.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|solutionrelative:tounsiyoyo\\model\\business.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|c:\\users\\zidane\\documents\\github\\programmationdistribuee\\backoffice\\tounsiyoyo\\tounsiyoyo\\backoffice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|solutionrelative:tounsiyoyo\\backoffice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|c:\\users\\zidane\\documents\\github\\programmationdistribuee\\backoffice\\tounsiyoyo\\tounsiyoyo\\backoffice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4AD01EF0-1AAF-4EC7-90D7-325C7A22611F}|tounsiYoyo\\tounsiYoyo.csproj|solutionrelative:tounsiyoyo\\backoffice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Backoffice.cs [Conception]",
+              "DocumentMoniker": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Backoffice.cs",
+              "RelativeDocumentMoniker": "tounsiYoyo\\Backoffice.cs",
+              "ToolTip": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Backoffice.cs [Conception]",
+              "RelativeToolTip": "tounsiYoyo\\Backoffice.cs [Conception]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-05T20:45:21.454Z",
+              "EditorCaption": " [Conception]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Business.cs",
+              "DocumentMoniker": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Model\\Business.cs",
+              "RelativeDocumentMoniker": "tounsiYoyo\\Model\\Business.cs",
+              "ToolTip": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Model\\Business.cs",
+              "RelativeToolTip": "tounsiYoyo\\Model\\Business.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswAgAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-05T19:56:04.108Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Special.cs",
+              "DocumentMoniker": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Model\\Special.cs",
+              "RelativeDocumentMoniker": "tounsiYoyo\\Model\\Special.cs",
+              "ToolTip": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Model\\Special.cs",
+              "RelativeToolTip": "tounsiYoyo\\Model\\Special.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-05T19:51:20.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Backoffice.cs",
+              "DocumentMoniker": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Backoffice.cs",
+              "RelativeDocumentMoniker": "tounsiYoyo\\Backoffice.cs",
+              "ToolTip": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\Backoffice.cs",
+              "RelativeToolTip": "tounsiYoyo\\Backoffice.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-11-05T19:48:04.229Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

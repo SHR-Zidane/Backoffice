@@ -1,30 +1,30 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
-    "net8.0-windows7.0": {}
+    "net8.0-windows": {}
   },
   "libraries": {},
   "projectFileDependencyGroups": {
-    "net8.0-windows7.0": []
+    "net8.0-windows": []
   },
   "packageFolders": {
-    "C:\\Users\\pd01wvj\\.nuget\\packages\\": {},
+    "C:\\Users\\Zidane\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pd01wvj\\source\\repos\\tounsiYoyo\\tounsiYoyo\\tounsiYoyo.csproj",
+      "projectUniqueName": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\tounsiYoyo.csproj",
       "projectName": "tounsiYoyo",
-      "projectPath": "C:\\Users\\pd01wvj\\source\\repos\\tounsiYoyo\\tounsiYoyo\\tounsiYoyo.csproj",
-      "packagesPath": "C:\\Users\\pd01wvj\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pd01wvj\\source\\repos\\tounsiYoyo\\tounsiYoyo\\obj\\",
+      "projectPath": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\tounsiYoyo.csproj",
+      "packagesPath": "C:\\Users\\Zidane\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Zidane\\Documents\\GitHub\\ProgrammationDISTRIBUEE\\Backoffice\\tounsiYoyo\\tounsiYoyo\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\pd01wvj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Zidane\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -37,7 +37,8 @@
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net8.0-windows7.0": {
+        "net8.0-windows": {
+          "framework": "net8.0-windows7.0",
           "targetAlias": "net8.0-windows",
           "projectReferences": {}
         }
@@ -52,10 +53,11 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "9.0.300"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
-      "net8.0-windows7.0": {
+      "net8.0-windows": {
+        "framework": "net8.0-windows7.0",
         "targetAlias": "net8.0-windows",
         "imports": [
           "net461",
@@ -68,6 +70,24 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.27, 8.0.27]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.27, 8.0.27]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.27, 8.0.27]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.27, 8.0.27]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -76,7 +96,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.300/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

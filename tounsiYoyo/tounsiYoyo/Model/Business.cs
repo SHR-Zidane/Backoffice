@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +26,7 @@ namespace tounsiYoyo.Model
         {
             string json = JsonSerializer.Serialize(this);
 
-            File.WriteAllText("tounsi.json", json);
+            File.WriteAllText(@"../../../../tounsi.json", json);
         }
     }
 }
