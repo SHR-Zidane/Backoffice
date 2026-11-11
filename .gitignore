@@ -1,0 +1,14 @@
+# .NET build outputs
+**/bin/
+**/obj/
+
+# Compiled binaries and debug symbols
+*.dll
+*.exe
+*.pdb
+*.so
+*.dylib
+*.app/
+
+# IDE and OS files
+.DS_Store
