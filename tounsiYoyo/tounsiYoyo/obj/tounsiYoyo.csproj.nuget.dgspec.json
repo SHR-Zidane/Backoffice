@@ -61,6 +61,10 @@
             "Avalonia.Themes.Fluent": {
               "target": "Package",
               "version": "[11.2.5, )"
+            },
+            "MQTTnet": {
+              "target": "Package",
+              "version": "[5.2.0.1603, )"
             }
           },
           "imports": [

@@ -1,16 +1,26 @@
+using System.Buffers;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+using MQTTnet;
 using tounsiYoyo.Model;
 
 namespace tounsiYoyo;
 
 public class Backoffice : Window
 {
+    private const string MqttBrokerHost = "blue.section-inf.ch";
+    private const int MqttBrokerPort = 1883;
+    private const string MqttUsername = "ict";
+    private const string MqttPassword = "321";
+    private const string MqttTimeTopic = "umddcmid3b/time";
+
     private readonly TextBlock BusinessName = new();
     private readonly Image BusinessLogo = new();
     private readonly TextBlock BusinessID = new();
@@ -22,6 +32,11 @@ public class Backoffice : Window
     private readonly Border StatusBanner = new();
     private readonly TextBlock StatusMessage = new();
     private readonly TextBlock TimeDisplay = new();
+    private readonly Button MqttConnectButton = new();
+    private readonly Button MqttDisconnectButton = new();
+    private readonly Border MqttStatusBanner = new();
+    private readonly TextBlock MqttStatusMessage = new();
+    private IMqttClient? _mqttClient;
     private Business? _business;
     private string? _resolvedJsonPath;
 
@@ -67,30 +82,56 @@ public class Backoffice : Window
         Grid.SetRow(SpecialPrice, 8);
         layout.Children.Add(SpecialPrice);
 
-        Button readTimeButton = new Button
-        {
-            Content = "Lire l'heure",
-            Width = 120,
-            Height = 36,
-            FontSize = 14,
-            FontWeight = FontWeight.SemiBold,
-            Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand)
-        };
-        readTimeButton.Click += ReadTime_button_click;
-
         TimeDisplay.Text = "Heure non chargée";
         TimeDisplay.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center;
+        Button localTimeButton = new Button
+        {
+            Content = "Lire l'heure depuis le fichier",
+            Height = 36,
+            FontSize = 14,
+            Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand)
+        };
+        localTimeButton.Click += ReadTime_button_click;
+
         StackPanel timePanel = new StackPanel
         {
             Orientation = Avalonia.Layout.Orientation.Horizontal,
             Spacing = 12,
             VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
-            Children = { readTimeButton, TimeDisplay }
+            Children = { localTimeButton, TimeDisplay }
         };
-        Grid.SetColumn(timePanel, 0);
-        Grid.SetRow(timePanel, 9);
-        Grid.SetColumnSpan(timePanel, 3);
-        layout.Children.Add(timePanel);
+
+        MqttConnectButton.Content = "Se connecter et s'abonner";
+        MqttConnectButton.Height = 36;
+        MqttConnectButton.Click += ConnectMqtt_button_click;
+        MqttDisconnectButton.Content = "Déconnecter";
+        MqttDisconnectButton.Height = 36;
+        MqttDisconnectButton.IsEnabled = false;
+        MqttDisconnectButton.Click += DisconnectMqtt_button_click;
+
+        MqttStatusMessage.Text = "Non connecté";
+        MqttStatusBanner.Padding = new Thickness(10, 6);
+        MqttStatusBanner.CornerRadius = new CornerRadius(4);
+        MqttStatusBanner.BorderThickness = new Thickness(1);
+        MqttStatusBanner.Child = MqttStatusMessage;
+        ShowMqttStatus("Non connecté", "#E8E8E8", "#CCCCCC", "#333333");
+
+        StackPanel mqttButtons = new StackPanel
+        {
+            Orientation = Avalonia.Layout.Orientation.Horizontal,
+            Spacing = 8,
+            Children = { MqttConnectButton, MqttDisconnectButton, MqttStatusBanner }
+        };
+        StackPanel timeAndMqttPanel = new StackPanel
+        {
+            Spacing = 8,
+            Children = { timePanel, mqttButtons }
+        };
+        Grid.SetColumn(timeAndMqttPanel, 0);
+        Grid.SetRow(timeAndMqttPanel, 9);
+        Grid.SetColumnSpan(timeAndMqttPanel, 3);
+        layout.Children.Add(timeAndMqttPanel);
+        Closed += async (_, _) => await DisconnectMqttAsync();
 
         Button exportButton = new Button
         {
@@ -246,20 +287,121 @@ public class Backoffice : Window
     {
         try
         {
-            string path = JsonPathResolver.ResolvePath("timestamp.json");
-            if (!File.Exists(path))
-            {
-                ShowError($"Fichier d'heure introuvable : '{path}'.");
-                return;
-            }
-
-            Time time = Time.LoadFromJson(path);
-            TimeDisplay.Text = time.ToDateTimeOffset().ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss");
+            TimeDisplay.Text = ReadTimeFromFile().ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss");
         }
         catch (Exception ex)
         {
             ShowError($"Erreur lors de la lecture de l'heure : {ex.Message}");
         }
+    }
+
+    private DateTimeOffset ReadTimeFromFile()
+    {
+        string path = JsonPathResolver.ResolvePath("timestamp.json");
+        if (!File.Exists(path))
+        {
+            throw new FileNotFoundException("Fichier d'heure introuvable.", path);
+        }
+
+        return Time.LoadFromJson(path).ToDateTimeOffset();
+    }
+
+    private async void ConnectMqtt_button_click(object? sender, RoutedEventArgs e)
+    {
+
+        MqttConnectButton.IsEnabled = false;
+        try
+        {
+            IMqttClient client = new MqttClientFactory().CreateMqttClient();
+            client.ApplicationMessageReceivedAsync += HandleMqttMessageAsync;
+            _mqttClient = client;
+
+            MqttClientOptionsBuilder optionsBuilder = new MqttClientOptionsBuilder()
+                .WithTcpServer(MqttBrokerHost.Trim(), MqttBrokerPort);
+            if (!string.IsNullOrWhiteSpace(MqttUsername))
+            {
+                optionsBuilder.WithCredentials(MqttUsername, MqttPassword);
+            }
+
+            await client.ConnectAsync(optionsBuilder.Build());
+            await client.SubscribeAsync(new MqttTopicFilterBuilder()
+                .WithTopic(MqttTimeTopic.Trim())
+                .Build());
+
+            MqttDisconnectButton.IsEnabled = true;
+            ShowMqttStatus($"Connecté et abonné à « {MqttTimeTopic.Trim()} ».", "#D4EDDA", "#C3E6CB", "#155724");
+        }
+        catch (Exception ex)
+        {
+            await DisconnectMqttAsync();
+            ShowMqttStatus($"Échec MQTT : {ex.Message}", "#F8D7DA", "#F5C6CB", "#721C24");
+        }
+        finally
+        {
+            MqttConnectButton.IsEnabled = _mqttClient?.IsConnected != true;
+        }
+    }
+
+    private async Task HandleMqttMessageAsync(MqttApplicationMessageReceivedEventArgs eventArgs)
+    {
+        try
+        {
+            string payload = Encoding.UTF8.GetString(eventArgs.ApplicationMessage.Payload.ToArray());
+            Time? receivedTime;
+            if (long.TryParse(payload.Trim(), out long unixTimeStamp))
+            {
+                receivedTime = new Time { UnixTimeStamp = unixTimeStamp };
+            }
+            else
+            {
+                receivedTime = JsonSerializer.Deserialize<Time>(payload);
+            }
+
+            if (receivedTime == null)
+            {
+                throw new JsonException("Le message ne contient pas de timestamp Unix valide.");
+            }
+
+            DateTimeOffset dateTime = receivedTime.ToDateTimeOffset();
+            string path = JsonPathResolver.ResolvePath("timestamp.json");
+            File.WriteAllText(path, JsonSerializer.Serialize(receivedTime, new JsonSerializerOptions { WriteIndented = true }));
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                TimeDisplay.Text = dateTime.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss");
+                ShowMqttStatus("Heure synchronisée depuis le broker.", "#D4EDDA", "#C3E6CB", "#155724");
+            });
+        }
+        catch (Exception ex)
+        {
+            Dispatcher.UIThread.Post(() =>
+                ShowMqttStatus($"Message horaire invalide : {ex.Message}", "#F8D7DA", "#F5C6CB", "#721C24"));
+        }
+    }
+
+    private async void DisconnectMqtt_button_click(object? sender, RoutedEventArgs e)
+    {
+        await DisconnectMqttAsync();
+        ShowMqttStatus("Déconnecté du broker.", "#E8E8E8", "#CCCCCC", "#333333");
+    }
+
+    private async Task DisconnectMqttAsync()
+    {
+        IMqttClient? client = _mqttClient;
+        _mqttClient = null;
+        MqttConnectButton.IsEnabled = true;
+        MqttDisconnectButton.IsEnabled = false;
+        if (client == null)
+        {
+            return;
+        }
+
+        if (client.IsConnected)
+        {
+            await client.DisconnectAsync();
+        }
+
+        client.Dispose();
     }
 
     public void Export_button_click(object? sender, RoutedEventArgs e)
@@ -309,5 +451,13 @@ public class Backoffice : Window
         StatusMessage.Foreground = new SolidColorBrush(Color.Parse(foreground));
         StatusMessage.Text = message;
         StatusBanner.IsVisible = true;
+    }
+
+    private void ShowMqttStatus(string message, string background, string border, string foreground)
+    {
+        MqttStatusBanner.Background = new SolidColorBrush(Color.Parse(background));
+        MqttStatusBanner.BorderBrush = new SolidColorBrush(Color.Parse(border));
+        MqttStatusMessage.Foreground = new SolidColorBrush(Color.Parse(foreground));
+        MqttStatusMessage.Text = message;
     }
 }

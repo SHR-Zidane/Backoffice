@@ -375,6 +375,19 @@
           "lib/net5.0/MicroCom.Runtime.dll": {}
         }
       },
+      "MQTTnet/5.2.0.1603": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/MQTTnet.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/MQTTnet.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "SkiaSharp/2.88.9": {
         "type": "package",
         "dependencies": {
@@ -1057,6 +1070,23 @@
         "microcom.runtime.nuspec"
       ]
     },
+    "MQTTnet/5.2.0.1603": {
+      "sha512": "iNuWVo/568aRo2ExEN2qkC4J5b07ckKqt+9Uok2kIbbK7PMBsXvYiKVENPHmOBWFB5ExhlNQb/qQ8M9/IYRTdQ==",
+      "type": "package",
+      "path": "mqttnet/5.2.0.1603",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/net10.0/MQTTnet.dll",
+        "lib/net10.0/MQTTnet.xml",
+        "lib/net8.0/MQTTnet.dll",
+        "lib/net8.0/MQTTnet.xml",
+        "mqttnet.5.2.0.1603.nupkg.sha512",
+        "mqttnet.nuspec",
+        "nuget.png"
+      ]
+    },
     "SkiaSharp/2.88.9": {
       "sha512": "3MD5VHjXXieSHCleRLuaTXmL2pD0mB7CcOB1x2kA1I4bhptf4e3R27iM93264ZYuAq6mkUyX5XbcxnZvMJYc1Q==",
       "type": "package",
@@ -1285,7 +1315,8 @@
       "Avalonia >= 11.2.5",
       "Avalonia.Desktop >= 11.2.5",
       "Avalonia.Fonts.Inter >= 11.2.5",
-      "Avalonia.Themes.Fluent >= 11.2.5"
+      "Avalonia.Themes.Fluent >= 11.2.5",
+      "MQTTnet >= 5.2.0.1603"
     ]
   },
   "packageFolders": {
@@ -1348,6 +1379,10 @@
           "Avalonia.Themes.Fluent": {
             "target": "Package",
             "version": "[11.2.5, )"
+          },
+          "MQTTnet": {
+            "target": "Package",
+            "version": "[5.2.0.1603, )"
           }
         },
         "imports": [

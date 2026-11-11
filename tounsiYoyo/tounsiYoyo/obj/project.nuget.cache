@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wciaBW0hEn8=",
+  "dgSpecHash": "Rq2DTydtxns=",
   "success": true,
   "projectFilePath": "/Users/zidounne/Documents/Backoffice/tounsiYoyo/tounsiYoyo/tounsiYoyo.csproj",
   "expectedPackageFiles": [
@@ -22,6 +22,7 @@
     "/Users/zidounne/.nuget/packages/harfbuzzsharp.nativeassets.webassembly/7.3.0.3/harfbuzzsharp.nativeassets.webassembly.7.3.0.3.nupkg.sha512",
     "/Users/zidounne/.nuget/packages/harfbuzzsharp.nativeassets.win32/7.3.0.3/harfbuzzsharp.nativeassets.win32.7.3.0.3.nupkg.sha512",
     "/Users/zidounne/.nuget/packages/microcom.runtime/0.11.0/microcom.runtime.0.11.0.nupkg.sha512",
+    "/Users/zidounne/.nuget/packages/mqttnet/5.2.0.1603/mqttnet.5.2.0.1603.nupkg.sha512",
     "/Users/zidounne/.nuget/packages/skiasharp/2.88.9/skiasharp.2.88.9.nupkg.sha512",
     "/Users/zidounne/.nuget/packages/skiasharp.nativeassets.linux/2.88.9/skiasharp.nativeassets.linux.2.88.9.nupkg.sha512",
     "/Users/zidounne/.nuget/packages/skiasharp.nativeassets.macos/2.88.9/skiasharp.nativeassets.macos.2.88.9.nupkg.sha512",
