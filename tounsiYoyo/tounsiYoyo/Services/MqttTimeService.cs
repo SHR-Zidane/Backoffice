@@ -1,6 +1,9 @@
 using System.Buffers;
+using System.Globalization;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 using Json.Schema;
 using MQTTnet;
 
@@ -13,8 +16,15 @@ public sealed class MqttTimeService : IAsyncDisposable
     private readonly string _topic;
     private readonly string? _username;
     private readonly string? _password;
+    private readonly string _logTopic;
     private readonly JsonSchema _schema;
     private IMqttClient? _client;
+
+    // Laisse les accents tels quels dans le JSON au lieu de les échapper en \uXXXX.
+    private static readonly JsonSerializerOptions LogJsonOptions = new()
+    {
+        Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+    };
 
     public event Action<DateTimeOffset>? TimeReceived;
     public event Action<string>? StatusChanged;
@@ -27,8 +37,11 @@ public sealed class MqttTimeService : IAsyncDisposable
         string topic,
         string? username = null,
         string? password = null,
-        string? schemaPath = null)
+        string? schemaPath = null,
+        string logTopic = "umddcmid3b/log")
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(logTopic);
+        _logTopic = logTopic.Trim();
         ArgumentException.ThrowIfNullOrWhiteSpace(brokerHost);
         ArgumentException.ThrowIfNullOrWhiteSpace(topic);
         ArgumentOutOfRangeException.ThrowIfLessThan(brokerPort, 1);
@@ -107,6 +120,39 @@ public sealed class MqttTimeService : IAsyncDisposable
         {
             client.Dispose();
         }
+    }
+
+    /// <summary>
+    /// Construit un message de log au format attendu par SERV-Log
+    /// (même enveloppe que les messages du service de temps).
+    /// </summary>
+    public static string BuildLogMessage(string from, DateTimeOffset timestamp, string level, string text)
+    {
+        return JsonSerializer.Serialize(new
+        {
+            v = 1,
+            id = Guid.NewGuid().ToString(),
+            from,
+            to = "*",
+            ts = timestamp.UtcDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ", CultureInfo.InvariantCulture),
+            type = "log",
+            payload = new { level, text },
+        }, LogJsonOptions);
+    }
+
+    public async Task PublishLogAsync(string from, DateTimeOffset timestamp, string level, string text)
+    {
+        IMqttClient? client = _client;
+        if (client is null || !client.IsConnected)
+        {
+            throw new InvalidOperationException("Client MQTT non connecté.");
+        }
+
+        MqttApplicationMessage message = new MqttApplicationMessageBuilder()
+            .WithTopic(_logTopic)
+            .WithPayload(BuildLogMessage(from, timestamp, level, text))
+            .Build();
+        await client.PublishAsync(message);
     }
 
     private Task HandleMqttMessageAsync(MqttApplicationMessageReceivedEventArgs eventArgs)

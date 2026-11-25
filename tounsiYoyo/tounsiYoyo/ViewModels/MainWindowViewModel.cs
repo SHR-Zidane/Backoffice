@@ -11,6 +11,13 @@ public partial class MainWindowViewModel : ObservableObject, IAsyncDisposable
 {
     private readonly MqttTimeService _mqttTimeService;
 
+    // Dernier état connu d'après l'heure du broker ; null tant qu'aucune heure n'a été reçue.
+    private bool? _lastIsOpen;
+
+    public string BusinessId { get; set; } = string.Empty;
+
+    public string BusinessName { get; set; } = string.Empty;
+
     [ObservableProperty]
     private string formattedDate = "Heure non chargée";
 
@@ -73,7 +80,31 @@ public partial class MainWindowViewModel : ObservableObject, IAsyncDisposable
         {
             ShowDate(dateTime);
             ConnectionStatus = "Heure synchronisée depuis le broker.";
+
+            bool isOpen = OpeningHours.IsOpen(dateTime.LocalDateTime);
+            bool changed = _lastIsOpen is bool previous && previous != isOpen;
+            _lastIsOpen = isOpen;
+            if (changed)
+            {
+                _ = PublishShopStatusLogAsync(isOpen, dateTime);
+            }
         });
+    }
+
+    private async Task PublishShopStatusLogAsync(bool isOpen, DateTimeOffset dateTime)
+    {
+        string from = string.IsNullOrWhiteSpace(BusinessId) ? "tounsiYoyo" : BusinessId;
+        string name = string.IsNullOrWhiteSpace(BusinessName) ? "Le commerce" : BusinessName;
+        string text = isOpen ? $"{name} : ouverture du commerce" : $"{name} : fermeture du commerce";
+
+        try
+        {
+            await _mqttTimeService.PublishLogAsync(from, dateTime, "info", text);
+        }
+        catch (Exception ex)
+        {
+            Dispatcher.UIThread.Post(() => ConnectionStatus = $"Échec de l'envoi du log : {ex.Message}");
+        }
     }
 
     private void OnStatusChanged(string status)

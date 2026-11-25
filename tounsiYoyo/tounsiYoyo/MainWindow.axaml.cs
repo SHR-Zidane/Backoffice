@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     private const string MqttUsername = "ict";
     private const string MqttPassword = "321";
     private const string MqttTimeTopic = "umddcmid3b/time";
+    private const string MqttLogTopic = "umddcmid3b/log";
 
     private readonly TextBlock BusinessName = new();
     private readonly Image BusinessLogo = new();
@@ -46,7 +47,8 @@ public partial class MainWindow : Window
             GetMqttBrokerPort(),
             Environment.GetEnvironmentVariable("MQTT_TIME_TOPIC") ?? MqttTimeTopic,
             Environment.GetEnvironmentVariable("MQTT_USERNAME") ?? MqttUsername,
-            Environment.GetEnvironmentVariable("MQTT_PASSWORD") ?? MqttPassword);
+            Environment.GetEnvironmentVariable("MQTT_PASSWORD") ?? MqttPassword,
+            logTopic: Environment.GetEnvironmentVariable("MQTT_LOG_TOPIC") ?? MqttLogTopic);
         _viewModel = new MainWindowViewModel(mqttTimeService);
         DataContext = _viewModel;
         _viewModel.PropertyChanged += (_, eventArgs) =>
@@ -264,6 +266,8 @@ public partial class MainWindow : Window
             }
 
             _business = data;
+            _viewModel.BusinessId = data.ID;
+            _viewModel.BusinessName = data.Name;
 
             BusinessName.Text = data.Name;
             BusinessID.Text = $"ID : {data.ID}";
