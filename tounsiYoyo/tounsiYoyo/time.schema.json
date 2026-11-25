@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contrat/time",
+  "title": "Message time (enveloppe diffusée par le service de temps)",
+  "type": "object",
+  "required": [
+    "type",
+    "payload"
+  ],
+  "properties": {
+    "v": {
+      "type": "integer"
+    },
+    "id": {
+      "type": "string"
+    },
+    "from": {
+      "type": "string"
+    },
+    "to": {
+      "type": "string"
+    },
+    "ts": {
+      "type": "string"
+    },
+    "type": {
+      "const": "time"
+    },
+    "payload": {
+      "type": "object",
+      "required": [
+        "timestamp"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "timestamp": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
